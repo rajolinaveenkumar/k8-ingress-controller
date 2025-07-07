@@ -1,5 +1,23 @@
-# apiVersion: networking.k8s.io/v1 
-# kind: Ingress
-# metadata:
-#   name: app1-Ingress
-#   annotations:  
+apiVersion: networking.k8s.io/v1 
+kind: Ingress
+metadata:
+  name: app1-Ingress
+  annotations:    
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:343430925817:certificate/35ca30e5-2765-4c77-bac3-9ecbbd459e5f
+    alb.ingress.kubernetes.io/group.name: naveen-alb
+spec:
+  ingressClassName: alb
+  rules:
+  - host: "app1.naveenrajoli.site"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: app1-svc
+            port: 
+              number: 80

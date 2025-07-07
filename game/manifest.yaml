@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment 
+metadata:
+  name: game
+  labels:
+    app: game
+    purpose: tesing-game 
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: game
+      purpose: tesing-game 
+  template:
+    metadata:
+      labels:
+        app: game
+        purpose: tesing-game 
+    spec:
+      containers:
+      - name: game
+        image: naveenrajoli/game:1.0.0
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: game-svc 
+spec:
+  selector:
+    app: game
+    purpose: tesing-game 
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80

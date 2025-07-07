@@ -20,7 +20,7 @@ spec:
       containers:
       - name: app1
         image: naveenrajoli/app1:1.0.0
-        port:
+        ports:
         - containerPort: 80
 ---
 apiVersion: v1

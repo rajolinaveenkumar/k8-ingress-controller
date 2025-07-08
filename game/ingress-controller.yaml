@@ -1,14 +1,20 @@
-apiVersion: networking.k8s.io/v1 
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: game-ingress
-  annotations:    
+  name: my-ingress 
+  annotations:
+    alb.ingress.kubernetes.io/load-balancername: expense-ingress-alb # custom name for alb
+    alb.ingress.kubernetes.io/group.name: ingres-controller-group # group name 
     alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:343430925817:certificate/7ebcd5b8-f607-4322-bedc-9f09b43f90ec
     alb.ingress.kubernetes.io/target-type: ip
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
-    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:343430925817:certificate/566224e2-204f-4152-a825-1da50311d157
-    alb.ingress.kubernetes.io/group.name: naveen-alb
-spec:
+    alb.ingress.kubernetes.io/healthcheck-intervel-seconds: 15
+    alb.ingress.kubernetes.io/healthcheck-timeout-seconds: 5
+    alb.ingress.kubernetes.io/healthy-thershould-count: 2
+    alb.ingress.kubernetes.io/unhealthy-thershould-count: 2
+    alb.ingress.kubernetes.io/success-codes: 200-299
+spec: 
   ingressClassName: alb
   rules:
   - host: "game.naveenrajoli.site"
@@ -19,5 +25,6 @@ spec:
         backend:
           service:
             name: game-svc
-            port: 
+            port:
               number: 80
+

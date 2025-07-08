@@ -1,14 +1,20 @@
-apiVersion: networking.k8s.io/v1 
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: app2-ingress
-  annotations:    
-    alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/target-type: ip
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
-    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:343430925817:certificate/566224e2-204f-4152-a825-1da50311d157
-    alb.ingress.kubernetes.io/group.name: naveen-alb
-spec:
+  name: app2-ingress 
+  annotations:
+    alb.ingress.kubernetes.io/load-balancer-name: expense-ingress-alb 
+    alb.ingress.kubernetes.io/group.name: ingres-controller-group   
+    alb.ingress.kubernetes.io/scheme: "internet-facing"              
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'         
+    alb.ingress.kubernetes.io/certificate-arn: "arn:aws:acm:us-east-1:343430925817:certificate/7ebcd5b8-f607-4322-bedc-9f09b43f90ec"
+    alb.ingress.kubernetes.io/target-type: "ip"
+    alb.ingress.kubernetes.io/healthcheck-interval-seconds: "15"     
+    alb.ingress.kubernetes.io/healthcheck-timeout-seconds: "5"
+    alb.ingress.kubernetes.io/healthy-threshold-count: "2"             
+    alb.ingress.kubernetes.io/unhealthy-threshold-count: "2"
+    alb.ingress.kubernetes.io/success-codes: "200-299"
+spec: 
   ingressClassName: alb
   rules:
   - host: "app2.naveenrajoli.site"
@@ -19,5 +25,5 @@ spec:
         backend:
           service:
             name: app2-svc
-            port: 
+            port:
               number: 80
